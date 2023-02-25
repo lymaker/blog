@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<html lang="zh" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SpringBoot自动配置原理 - ZaiJian</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  <meta name="keywords" content=", SpringBoot,自动配置,@EnableAutoConfiguration">
+  <meta name="description" content="
+Spring Boot Version：2.7.9
+...">
+  <meta name="author" content="Liu Yun">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: true
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '若生活能够安逸，谁又愿颠沛流离。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">SpringBoot自动配置原理</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/galleries/ " class="underline "> 摄影</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/readme/ " class="underline "> 自述</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><span>&copy;</span> AGONY.ICU</div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">SpringBoot自动配置原理</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>February 24, 2023</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>1667</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <blockquote>
+<p>Spring Boot Version：2.7.9</p>
+</blockquote>
+<h1 id="1-引言"><a href="#1-引言" class="headerlink" title="1. 引言"></a>1. 引言</h1><p>在<a target="_blank" rel="noopener" href="http://localhost/framework/spring/SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/">#SpringBoot框架概述</a>文中的示例，一行代码即启动了应用，那么SpringBoot是如何完成自动配置的？</p>
+<h1 id="2-SpringBootApplication"><a href="#2-SpringBootApplication" class="headerlink" title="2. @SpringBootApplication"></a>2. @SpringBootApplication</h1><p><code>@SpringBootApplication</code>注解结构如下，其主要由三个注解组合而成。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootConfiguration</span><br><span class="hljs-meta">@EnableAutoConfiguration</span><br><span class="hljs-meta">@ComponentScan(</span><br><span class="hljs-meta">    excludeFilters = &#123; </span><br><span class="hljs-meta">        @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),</span><br><span class="hljs-meta">        @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) </span><br><span class="hljs-meta">    &#125;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> SpringBootApplication &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-1-SpringBootConfiguration"><a href="#2-1-SpringBootConfiguration" class="headerlink" title="2.1 @SpringBootConfiguration"></a>2.1 @SpringBootConfiguration</h2><p><code>@SpringBootConfiguration</code>是<code>SpringBoot</code>提供的语义化注解，与<code>@Configuration</code>实现的功能是一样的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@Indexed</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> SpringBootConfiguration &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>被<code>@Configuration</code>注解的类为配置类</p>
+</li>
+<li><p>被<code>@Indexed</code>注解的类会往<code>META-INF/spring.components</code>文件中写入索引记录</p>
+</li>
+</ul>
+<blockquote>
+<p><a href="">理解Spring中@Configuration注解</a></p>
+<p><a href="">理解Spring中@Indexed注解</a></p>
+</blockquote>
+<h2 id="2-2-EnableAutoConfiguration"><a href="#2-2-EnableAutoConfiguration" class="headerlink" title="2.2 @EnableAutoConfiguration"></a>2.2 @EnableAutoConfiguration</h2><p>当应用启动后，也就是调用了<code>SpringApplication.run(...)</code>方法后，会检测是否存在<code>@EnableAutoConfiguration</code>注解。</p>
+<p>如果存在此注解，则会自动扫描类路径（包含<code>jar</code>）下的所有配置类。</p>
+<p>配置类是使用<code>@Configuration</code>注解声明的类。</p>
+<p>在配置类的类体中可以使用<code>@Conditional</code>注解做到定制化配置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@AutoConfigurationPackage</span><br><span class="hljs-meta">@Import(AutoConfigurationImportSelector.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> EnableAutoConfiguration &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-2-1-AutoConfigurationPackage"><a href="#2-2-1-AutoConfigurationPackage" class="headerlink" title="2.2.1 @AutoConfigurationPackage"></a>2.2.1 @AutoConfigurationPackage</h3><p>该注解会将“声明类”所在的包装载至<code>IOC</code>中。</p>
+<p>包装载的操作依靠于<code>@Import</code>注解导入的<code>Registrar</code>类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Import(AutoConfigurationPackages.Registrar.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> AutoConfigurationPackage &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-2-2-Import-AutoConfigurationImportSelector-class"><a href="#2-2-2-Import-AutoConfigurationImportSelector-class" class="headerlink" title="2.2.2 @Import(AutoConfigurationImportSelector.class)"></a>2.2.2 @Import(AutoConfigurationImportSelector.class)</h3><h2 id="2-3-ComponentScan"><a href="#2-3-ComponentScan" class="headerlink" title="2.3 @ComponentScan"></a>2.3 @ComponentScan</h2><h1 id="本文相关术语"><a href="#本文相关术语" class="headerlink" title="本文相关术语"></a>本文相关术语</h1><p>声明类：声明<code>@SpringBootApplication</code>注解的类</p>
+<h1 id="自动配置顺序"><a href="#自动配置顺序" class="headerlink" title="自动配置顺序"></a>自动配置顺序</h1><p>自动配置顺序（auto configuration）：</p>
+<ul>
+<li><p>加载<code>spring-boot-autoconfigure</code>依赖中的<code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>文件中的所有配置类</p>
+</li>
+<li><p>自动检测类路径上的<code>jar</code>包，按需配置</p>
+</li>
+<li><p>条件加载</p>
+</li>
+</ul>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>撰写本文时查阅了相关文章，如下。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yuhushen/p/15771063.html">SpringBoot自动装配 - 御狐神 - 博客园</a></li>
+</ul>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>Liu Yun</li>
+    <li><strong>本文链接：</strong><a href="http://agony.icu/framework/spring/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/index.html" title="http:&#x2F;&#x2F;agony.icu&#x2F;framework&#x2F;spring&#x2F;SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86&#x2F;index.html">http:&#x2F;&#x2F;agony.icu&#x2F;framework&#x2F;spring&#x2F;SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/framework/spring/%E7%90%86%E8%A7%A3Spring%E4%B8%AD@Indexed%E6%B3%A8%E8%A7%A3/"><i class="iconfont iconleft"></i></a>
+    <a href="/framework/spring/SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/">SpringBoot框架概述<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1. 引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-SpringBootApplication"><span class="toc-text">2. @SpringBootApplication</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-SpringBootConfiguration"><span class="toc-text">2.1 @SpringBootConfiguration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-EnableAutoConfiguration"><span class="toc-text">2.2 @EnableAutoConfiguration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-AutoConfigurationPackage"><span class="toc-text">2.2.1 @AutoConfigurationPackage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-Import-AutoConfigurationImportSelector-class"><span class="toc-text">2.2.2 @Import(AutoConfigurationImportSelector.class)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-ComponentScan"><span class="toc-text">2.3 @ComponentScan</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E6%96%87%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD"><span class="toc-text">本文相关术语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E9%A1%BA%E5%BA%8F"><span class="toc-text">自动配置顺序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-text">引用</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=1265894132 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="https://github.com/lymaker "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:1265894132@qq.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><span>&copy;</span> AGONY.ICU</div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

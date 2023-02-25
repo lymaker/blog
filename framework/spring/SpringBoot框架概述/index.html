@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<html lang="zh" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SpringBoot框架概述 - ZaiJian</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="
+Spring Boot Version：2.7.9
+...">
+  <meta name="author" content="Liu Yun">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: true
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '若生活能够安逸，谁又愿颠沛流离。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">SpringBoot框架概述</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/galleries/ " class="underline "> 摄影</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/readme/ " class="underline "> 自述</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><span>&copy;</span> AGONY.ICU</div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">SpringBoot框架概述</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>February 24, 2023</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3288</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+          <p>简单诠释Spring Boot的诞生背景，并提供了快速开发示例。</p>
+        
+        <blockquote>
+<p>Spring Boot Version：2.7.9</p>
+</blockquote>
+<h1 id="1-Spring-Boot的诞生背景"><a href="#1-Spring-Boot的诞生背景" class="headerlink" title="1. Spring Boot的诞生背景"></a>1. Spring Boot的诞生背景</h1><p>在没有SpringBoot之前，使用Spring框架与其它技术整合时需要经过非常繁琐的配置。</p>
+<ol>
+<li><p>使用<code>Spring Web</code>框架时，需要配置<code>web.xml</code>。</p>
+</li>
+<li><p>使用<code>Mybatis</code>框架时，需要手动配置<code>SessionFactory</code>，<code>Datasource</code>，<code>Connection</code>，扫描映射接口，映射文件等。</p>
+</li>
+<li><p>使用<code>Redis</code>技术时，需要相关<code>Redis</code>配置。</p>
+</li>
+</ol>
+<p>针对以上问题，Spring官方提供了<code>Spring Boot</code>框架。</p>
+<p><code>Spring Boot</code>其定位就是快速搭建Spring引用。提供了高度可定制化的配置，许多使用的功能。</p>
+<p>例如</p>
+<ul>
+<li><p>依赖版本管理（<code>spring boot</code>官方维护了一套常用的依赖版本控制，极大程度上解决了开发者自行配置依赖可能导致依赖冲突的情况</p>
+</li>
+<li><p>starter 快速整合依赖（官方或第三方提供的快速整合依赖</p>
+</li>
+<li><p>自动配置（自动加载类路径上存在的配置类并进行配置</p>
+</li>
+<li><p>应用配置文件（比如：application.yml</p>
+</li>
+<li><p>应用构建（<code>spring boot</code>提供了应用打包工具</p>
+</li>
+</ul>
+<h1 id="2-快速上手（体验SpringBoot开发Web-API"><a href="#2-快速上手（体验SpringBoot开发Web-API" class="headerlink" title="2. 快速上手（体验SpringBoot开发Web API"></a>2. 快速上手（体验SpringBoot开发Web API</h1><h2 id="2-1-创建Maven项目"><a href="#2-1-创建Maven项目" class="headerlink" title="2.1 创建Maven项目"></a>2.1 创建Maven项目</h2><p><code>pom.xml</code>添加如下内容。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.7.9<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2-2-创建启动类"><a href="#2-2-创建启动类" class="headerlink" title="2.2 创建启动类"></a>2.2 创建启动类</h2><p>启动类只是负责启动Spring应用。</p>
+<p>个人建议，SpringBoot的启动类中不要参杂其它代码，这样会导致启动类很乱，违反单一职责，且不直观。</p>
+<p>如果需要额外添加其它代码，则可以参见SpringBoot官网文档中的事件部分。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/2.7.9/reference/htmlsingle/#features.spring-application.application-availability">Application Availability</a><br><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/2.7.9/reference/htmlsingle/#features.spring-application.application-events-and-listeners">Application Events and Listeners</a></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> icu.agony.springboot;<br><br><span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;<br><span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;<br><br><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Application</span> &#123;<br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>    SpringApplication.run(Application.class);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-3-Controller"><a href="#2-3-Controller" class="headerlink" title="2.3 Controller"></a>2.3 Controller</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> icu.agony.springboot.controller;<br><br><span class="hljs-keyword">import</span> icu.agony.springboot.service.WeatherService;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/weather&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WeatherController</span> &#123;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> WeatherService weatherService;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-title function_">WeatherController</span><span class="hljs-params">(WeatherService weatherService)</span> &#123;<br>    <span class="hljs-built_in">this</span>.weatherService = weatherService;<br>  &#125;<br><br>  <span class="hljs-meta">@GetMapping</span><br>  String <span class="hljs-title function_">randomWeather</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">weather</span> <span class="hljs-operator">=</span> weatherService.randomWeather();<br>    <span class="hljs-keyword">return</span> String.format(<span class="hljs-string">&quot;Hi, your city is %s now&quot;</span>, weather);<br>  &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-4-Service"><a href="#2-4-Service" class="headerlink" title="2.4 Service"></a>2.4 Service</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">WeatherService</span> &#123;<br><br>  String <span class="hljs-title function_">randomWeather</span><span class="hljs-params">()</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> icu.agony.springboot.service.impl;<br><br><span class="hljs-keyword">import</span> icu.agony.springboot.service.WeatherService;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-keyword">import</span> java.util.Random;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WeatherServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WeatherService</span> &#123;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String[] weathers = &#123;<span class="hljs-string">&quot;Cloudy&quot;</span>, <span class="hljs-string">&quot;Sunny&quot;</span>, <span class="hljs-string">&quot;Snow&quot;</span>, <span class="hljs-string">&quot;Rain&quot;</span>&#125;;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> String <span class="hljs-title function_">randomWeather</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> random.nextInt(weathers.length);<br>    <span class="hljs-keyword">return</span> weathers[index];<br>  &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-5-application-yml"><a href="#2-5-application-yml" class="headerlink" title="2.5 application.yml"></a>2.5 application.yml</h2><p>通过<code>application.yml</code>配置文件外部化配置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java">server:<br>  port: <span class="hljs-number">9999</span><br><br>spring:<br>  mvc:<br>    servlet:<br>      path: /api<br>      load-on-startup: <span class="hljs-number">1</span><br>  main:<br>    log-startup-info: <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/2.7.9/reference/htmlsingle/#features.external-config">Externalized Configuration</a></p>
+</blockquote>
+<h2 id="2-6-Test"><a href="#2-6-Test" class="headerlink" title="2.6 Test"></a>2.6 Test</h2><img  title=""  class="lazyload" data-original="https://blog-1300725964.cos.ap-shanghai.myqcloud.com/framework/spring/SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/1" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="" width="483">
+
+<img  title=""  class="lazyload" data-original="https://blog-1300725964.cos.ap-shanghai.myqcloud.com/framework/spring/SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/2" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  alt="" width="481">
+
+<h2 id="2-7-项目结构"><a href="#2-7-项目结构" class="headerlink" title="2.7 项目结构"></a>2.7 项目结构</h2><p><img   class="lazyload" data-original="https://blog-1300725964.cos.ap-shanghai.myqcloud.com/framework/spring/SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/3" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<h2 id="2-8-结语"><a href="#2-8-结语" class="headerlink" title="2.8 结语"></a>2.8 结语</h2><p>在没有<code>Spring Boot</code>的加持下，将此项目搭建并运行绝非如此迅速。</p>
+<br/>
+
+<p>不使用<code>Spring Boot</code>时</p>
+<ol>
+<li><p>需要导入<code>Spring</code>，<code>Spring mvc</code>等基础依赖，没有依赖管理时自行配置依赖极易造成依赖不匹配或冲突。</p>
+</li>
+<li><p>配置<code>web.xml</code>文件。</p>
+</li>
+<li><p>配置文件（例如application.yml）需要自行实现。</p>
+</li>
+<li><p>项目打包，放置<code>Tomcat</code>容器中运行。</p>
+</li>
+</ol>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>Liu Yun</li>
+    <li><strong>本文链接：</strong><a href="http://agony.icu/framework/spring/SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/index.html" title="http:&#x2F;&#x2F;agony.icu&#x2F;framework&#x2F;spring&#x2F;SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0&#x2F;index.html">http:&#x2F;&#x2F;agony.icu&#x2F;framework&#x2F;spring&#x2F;SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/framework/spring/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/"><i class="iconfont iconleft"></i>SpringBoot自动配置原理</a>
+    <a href="/framework/spring/Spring%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/">Spring框架概述<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Spring-Boot%E7%9A%84%E8%AF%9E%E7%94%9F%E8%83%8C%E6%99%AF"><span class="toc-text">1. Spring Boot的诞生背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%EF%BC%88%E4%BD%93%E9%AA%8CSpringBoot%E5%BC%80%E5%8F%91Web-API"><span class="toc-text">2. 快速上手（体验SpringBoot开发Web API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BAMaven%E9%A1%B9%E7%9B%AE"><span class="toc-text">2.1 创建Maven项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="toc-text">2.2 创建启动类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Controller"><span class="toc-text">2.3 Controller</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Service"><span class="toc-text">2.4 Service</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-application-yml"><span class="toc-text">2.5 application.yml</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-Test"><span class="toc-text">2.6 Test</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">2.7 项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-%E7%BB%93%E8%AF%AD"><span class="toc-text">2.8 结语</span></a></li></ol></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=1265894132 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="https://github.com/lymaker "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:1265894132@qq.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><span>&copy;</span> AGONY.ICU</div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
