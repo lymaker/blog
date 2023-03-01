@@ -6,12 +6,12 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>标签 - ZaiJian</title>
+  <title>重写与重载的区别 - ZaiJian</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="google" content="notranslate" />
   
-  <meta name="description" content="对，这是我的博客">
+  <meta name="description" content="1. 定义重载：方法名相同，参数不同（参数个数，参数顺...">
   <meta name="author" content="Liu Yun">
   <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
   <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
@@ -152,7 +152,7 @@
       
       
     </div>
-    <div class="center">标签</div>
+    <div class="center">重写与重载的区别</div>
     <div class="right">
       <i class="iconfont iconmenu j-navbar-menu"></i>
     </div>
@@ -178,7 +178,7 @@
       </li><li class="menu-item">
         <a href="/tags/ " class="underline "> 标签</a>
       </li><li class="menu-item">
-        <a href="/categories/ " class="underline active"> 分类</a>
+        <a href="/categories/ " class="underline "> 分类</a>
       </li><li class="menu-item">
         <a href="/readme/ " class="underline "> 自述</a>
       </li></ul>
@@ -188,13 +188,94 @@
   </div>
 </nav>
   <main id="main">
-  <section class="categories">
-    <header class="header">
-  <h1 class="header-title">分类</h1>
-  <p class="header-subtitle">共: 4 个</p>
-</header>
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%A1%86%E6%9E%B6/">框架</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%BA%90%E7%A0%81/">源码</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9B%86%E5%90%88/">集合</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a><span class="category-list-count">1</span></li></ul>
-  </section>
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">重写与重载的区别</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>March 01, 2023</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>363</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h1 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h1><p>重载：方法名相同，参数不同（参数个数，参数顺序，参数类型），与返回值无关。</p>
+<p>重写：子类重写父类的方法，方法名必须相同，参数必须相同，返回值小于等于父类，异常小于等于父类。</p>
+<p>Example：重载</p>
+<img   class="lazyload" data-original="file:///D:/image/2023-03-01-20-59-30-image.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  title="" alt="" width="373">
+
+<p>Example：重写</p>
+<img   class="lazyload" data-original="file:///D:/image/2023-03-01-21-00-55-image.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  title="" alt="" width="260">
+
+<h1 id="2-范围"><a href="#2-范围" class="headerlink" title="2. 范围"></a>2. 范围</h1><p>重载：发生在父子类中（子类可以重载父类方法）</p>
+<p>重写：子类只有继承父类才可以重写</p>
+<h1 id="3-多态"><a href="#3-多态" class="headerlink" title="3. 多态"></a>3. 多态</h1><p>重载：重载是编译时的多态</p>
+<p>重写：重写是运行时的多态（JVM运行时）</p>
+<h1 id="4-返回"><a href="#4-返回" class="headerlink" title="4. 返回"></a>4. 返回</h1><p>重载：重载对返回类型没有要求</p>
+<p>重写：重写的方法必须兼容返回值类型</p>
+<h1 id="5-参数"><a href="#5-参数" class="headerlink" title="5. 参数"></a>5. 参数</h1><p>重载：重载的方法参数<strong>可以</strong>不同</p>
+<p>重写：重写的方法参数<strong>必须</strong>相同</p>
+<h1 id="6-修饰"><a href="#6-修饰" class="headerlink" title="6. 修饰"></a>6. 修饰</h1><p>重载：重载对修饰符没有要求</p>
+<p>重写：重写的方法修饰符必须大于等于被重写方法的修饰符</p>
+<h1 id="7-异常"><a href="#7-异常" class="headerlink" title="7. 异常"></a>7. 异常</h1><p>重载：重载对异常没有要求</p>
+<p>重写：重写的方法异常必须小于等于被重写方法的异常</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>Liu Yun</li>
+    <li><strong>本文链接：</strong><a href="http://agony.icu/java/basic/%E9%87%8D%E5%86%99%E4%B8%8E%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB/index.html" title="http:&#x2F;&#x2F;agony.icu&#x2F;java&#x2F;basic&#x2F;%E9%87%8D%E5%86%99%E4%B8%8E%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;index.html">http:&#x2F;&#x2F;agony.icu&#x2F;java&#x2F;basic&#x2F;%E9%87%8D%E5%86%99%E4%B8%8E%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://pic.izhaoo.com/alipay.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/basic/" rel="tag">basic</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a></a>
+    <a href="/framework/spring/SpringBoot%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86/">SpringBoot自动配置原理<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%AE%9A%E4%B9%89"><span class="toc-text">1. 定义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%8C%83%E5%9B%B4"><span class="toc-text">2. 范围</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%A4%9A%E6%80%81"><span class="toc-text">3. 多态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E8%BF%94%E5%9B%9E"><span class="toc-text">4. 返回</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%8F%82%E6%95%B0"><span class="toc-text">5. 参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E4%BF%AE%E9%A5%B0"><span class="toc-text">6. 修饰</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%BC%82%E5%B8%B8"><span class="toc-text">7. 异常</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
 </main>
   
 
