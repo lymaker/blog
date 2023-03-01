@@ -202,7 +202,7 @@ Spring Boot Version：2.7.9
     <div class="head-info">
       <span class="post-info-item"><i class="iconfont iconcalendar"></i>February 24, 2023</span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>1667</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3592</span>
     </div>
   </div>
 </section>
@@ -214,9 +214,17 @@ Spring Boot Version：2.7.9
 </blockquote>
 <h1 id="1-引言"><a href="#1-引言" class="headerlink" title="1. 引言"></a>1. 引言</h1><p>在<a target="_blank" rel="noopener" href="http://localhost/framework/spring/SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/">#SpringBoot框架概述</a>文中的示例，一行代码即启动了应用，那么SpringBoot是如何完成自动配置的？</p>
 <h1 id="2-SpringBootApplication"><a href="#2-SpringBootApplication" class="headerlink" title="2. @SpringBootApplication"></a>2. @SpringBootApplication</h1><p><code>@SpringBootApplication</code>注解结构如下，其主要由三个注解组合而成。</p>
+<ul>
+<li><p><code>@SpringBootConfiguration</code>：使<code>应用声明类</code>成为配置类</p>
+</li>
+<li><p><code>@EnableAutoConfiguration</code>：开启自动配置，具体说明查看 #2.1 章节</p>
+</li>
+<li><p><code>@ComponentScan</code>：扫描包下的所有组件，并装载进<code>IOC</code>中</p>
+</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootConfiguration</span><br><span class="hljs-meta">@EnableAutoConfiguration</span><br><span class="hljs-meta">@ComponentScan(</span><br><span class="hljs-meta">    excludeFilters = &#123; </span><br><span class="hljs-meta">        @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),</span><br><span class="hljs-meta">        @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) </span><br><span class="hljs-meta">    &#125;</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> SpringBootApplication &#123;&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="2-1-SpringBootConfiguration"><a href="#2-1-SpringBootConfiguration" class="headerlink" title="2.1 @SpringBootConfiguration"></a>2.1 @SpringBootConfiguration</h2><p><code>@SpringBootConfiguration</code>是<code>SpringBoot</code>提供的语义化注解，与<code>@Configuration</code>实现的功能是一样的。</p>
+<h2 id="2-1-SpringBootConfiguration"><a href="#2-1-SpringBootConfiguration" class="headerlink" title="2.1 @SpringBootConfiguration"></a>2.1 @SpringBootConfiguration</h2><p><code>@SpringBootConfiguration</code>是<code>SpringBoot</code>提供的语义化注解，与<code>@Configuration</code>实现的功能一致。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@Indexed</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> SpringBootConfiguration &#123;&#125;<br></code></pre></td></tr></table></figure>
 
 <ul>
@@ -225,32 +233,37 @@ Spring Boot Version：2.7.9
 <li><p>被<code>@Indexed</code>注解的类会往<code>META-INF/spring.components</code>文件中写入索引记录</p>
 </li>
 </ul>
-<blockquote>
-<p><a href="">理解Spring中@Configuration注解</a></p>
-<p><a href="">理解Spring中@Indexed注解</a></p>
-</blockquote>
 <h2 id="2-2-EnableAutoConfiguration"><a href="#2-2-EnableAutoConfiguration" class="headerlink" title="2.2 @EnableAutoConfiguration"></a>2.2 @EnableAutoConfiguration</h2><p>当应用启动后，也就是调用了<code>SpringApplication.run(...)</code>方法后，会检测是否存在<code>@EnableAutoConfiguration</code>注解。</p>
 <p>如果存在此注解，则会自动扫描类路径（包含<code>jar</code>）下的所有配置类。</p>
 <p>配置类是使用<code>@Configuration</code>注解声明的类。</p>
-<p>在配置类的类体中可以使用<code>@Conditional</code>注解做到定制化配置。</p>
+<p>在配置类的类体中可以使用<code>@Conditional</code>相关注解做到定制化配置。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@AutoConfigurationPackage</span><br><span class="hljs-meta">@Import(AutoConfigurationImportSelector.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> EnableAutoConfiguration &#123;&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="2-2-1-AutoConfigurationPackage"><a href="#2-2-1-AutoConfigurationPackage" class="headerlink" title="2.2.1 @AutoConfigurationPackage"></a>2.2.1 @AutoConfigurationPackage</h3><p>该注解会将“声明类”所在的包装载至<code>IOC</code>中。</p>
+<h3 id="2-2-1-AutoConfigurationPackage"><a href="#2-2-1-AutoConfigurationPackage" class="headerlink" title="2.2.1 @AutoConfigurationPackage"></a>2.2.1 @AutoConfigurationPackage</h3><p>该注解会将<code>声明类</code>所在的包装载至<code>IOC</code>中。</p>
 <p>包装载的操作依靠于<code>@Import</code>注解导入的<code>Registrar</code>类。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Import(AutoConfigurationPackages.Registrar.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> AutoConfigurationPackage &#123;&#125;<br></code></pre></td></tr></table></figure>
 
+<h3 id="2-2-2-Import-AutoConfigurationImportSelector-class"><a href="#2-2-2-Import-AutoConfigurationImportSelector-class" class="headerlink" title="2.2.2 @Import(AutoConfigurationImportSelector.class)"></a>2.2.2 @Import(AutoConfigurationImportSelector.class)</h3><p><code>AutoConfigurationImportSelector</code>类负责将<code>spring-boot-autoconfigure依赖/META-INF/spring/xxx.imports</code>文件中的所有配置类<strong>按条件</strong>加载至<code>IOC</code>中。</p>
+<p><img   class="lazyload" data-original="https://blog-1300725964.cos.ap-shanghai.myqcloud.com/framework/spring/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E5%8E%9F%E7%90%86/1" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<h4 id="源码解析前置知识"><a href="#源码解析前置知识" class="headerlink" title="源码解析前置知识"></a>源码解析前置知识</h4><p>掌握<code>@Import</code>注解</p>
+<h4 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String[] NO_IMPORTS = &#123;&#125;;<br><br><span class="hljs-comment">// SpringBoot会在启动时调用selectImports方法。</span><br><span class="hljs-comment">// SpringBoot会根据selectImports返回的数组加载Bean</span><br><span class="hljs-keyword">public</span> String[] selectImports(AnnotationMetadata annotationMetadata) &#123;<br>    <span class="hljs-comment">// 判断是否启用了@EnableAutoConfiguration</span><br>    <span class="hljs-keyword">if</span> (!isEnabled(annotationMetadata)) &#123;<br>        <span class="hljs-keyword">return</span> NO_IMPORTS;<br>    &#125;<br>    <span class="hljs-type">AutoConfigurationEntry</span> <span class="hljs-variable">autoConfigurationEntry</span> <span class="hljs-operator">=</span> getAutoConfigurationEntry(annotationMetadata);<br>    <span class="hljs-keyword">return</span> StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> AutoConfigurationEntry <span class="hljs-title function_">getAutoConfigurationEntry</span><span class="hljs-params">(AnnotationMetadata annotationMetadata)</span> &#123;<br>    <span class="hljs-comment">// 先决条件</span><br>    <span class="hljs-keyword">if</span> (!isEnabled(annotationMetadata)) &#123;<br>        <span class="hljs-keyword">return</span> EMPTY_ENTRY;<br>    &#125;<br>    <span class="hljs-comment">// 获取@EnableAutoConfiguration注解的所有属性</span><br>    <span class="hljs-type">AnnotationAttributes</span> <span class="hljs-variable">attributes</span> <span class="hljs-operator">=</span> getAttributes(annotationMetadata);<br>    <span class="hljs-comment">// 获取xxx.imports文件中的所有配置类</span><br>    List&lt;String&gt; configurations = getCandidateConfigurations(annotationMetadata, attributes);<br>    <span class="hljs-comment">// 移除冗余的类</span><br>    configurations = removeDuplicates(configurations);<br>    <span class="hljs-comment">// 将注解属性作为排除条件，获取xxx.imports文件中不符合排除条件的类</span><br>    Set&lt;String&gt; exclusions = getExclusions(annotationMetadata, attributes);<br>    <span class="hljs-comment">// 检查排除的类，如果排除的不是配置类则抛出异常</span><br>    checkExcludedClasses(configurations, exclusions);<br>    <span class="hljs-comment">// 移除所有排除类</span><br>    configurations.removeAll(exclusions);<br>    <span class="hljs-comment">// 使用/META-INF/spring.factories文件中的过滤器</span><br>    configurations = getConfigurationClassFilter().filter(configurations);<br>    <span class="hljs-comment">// 推送事件</span><br>    fireAutoConfigurationImportEvents(configurations, exclusions);<br>    <span class="hljs-comment">// 返回符合条件的配置类，@Import的提供者会根据返回值载入bean</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AutoConfigurationEntry</span>(configurations, exclusions);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h3 id="2-2-2-Import-AutoConfigurationImportSelector-class"><a href="#2-2-2-Import-AutoConfigurationImportSelector-class" class="headerlink" title="2.2.2 @Import(AutoConfigurationImportSelector.class)"></a>2.2.2 @Import(AutoConfigurationImportSelector.class)</h3><h2 id="2-3-ComponentScan"><a href="#2-3-ComponentScan" class="headerlink" title="2.3 @ComponentScan"></a>2.3 @ComponentScan</h2><h1 id="本文相关术语"><a href="#本文相关术语" class="headerlink" title="本文相关术语"></a>本文相关术语</h1><p>声明类：声明<code>@SpringBootApplication</code>注解的类</p>
-<h1 id="自动配置顺序"><a href="#自动配置顺序" class="headerlink" title="自动配置顺序"></a>自动配置顺序</h1><p>自动配置顺序（auto configuration）：</p>
+<h2 id="2-3-ComponentScan"><a href="#2-3-ComponentScan" class="headerlink" title="2.3 @ComponentScan"></a>2.3 @ComponentScan</h2><p>扫描路径下的所有组件，并装载至<code>IOC</code>中。</p>
+<p>扫描的过程中，SpringBoot为<code>@ComponentScan</code>添加了两个<code>Filter</code>，使用者只需实现特定类或接口即可实现对Bean的过滤。</p>
+<h1 id="3-自动配置顺序"><a href="#3-自动配置顺序" class="headerlink" title="3. 自动配置顺序"></a>3. 自动配置顺序</h1><p><code>TODO：此章节并未完善</code></p>
+<p>自动配置顺序（auto configuration）：</p>
 <ul>
-<li><p>加载<code>spring-boot-autoconfigure</code>依赖中的<code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>文件中的所有配置类</p>
+<li><p>加载 <code>spring-boot-autoconfigure</code> 依赖中的<code>META-INF/spring/xxx.imports</code>文件中的所有配置类</p>
 </li>
 <li><p>自动检测类路径上的<code>jar</code>包，按需配置</p>
 </li>
 <li><p>条件加载</p>
 </li>
 </ul>
+<h1 id="4-本文相关术语"><a href="#4-本文相关术语" class="headerlink" title="4. 本文相关术语"></a>4. 本文相关术语</h1><p>应用声明类：声明<code>@SpringBootApplication</code>注解的类</p>
+<p>声明类：注解所应用到的类</p>
 <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>撰写本文时查阅了相关文章，如下。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yuhushen/p/15771063.html">SpringBoot自动装配 - 御狐神 - 博客园</a></li>
@@ -283,7 +296,7 @@ Spring Boot Version：2.7.9
 
         
   <nav class="nav">
-    <a href="/framework/spring/%E7%90%86%E8%A7%A3Spring%E4%B8%AD@Indexed%E6%B3%A8%E8%A7%A3/"><i class="iconfont iconleft"></i></a>
+    <a></a>
     <a href="/framework/spring/SpringBoot%E6%A1%86%E6%9E%B6%E6%A6%82%E8%BF%B0/">SpringBoot框架概述<i class="iconfont iconright"></i></a>
   </nav>
 
@@ -297,7 +310,7 @@ Spring Boot Version：2.7.9
           
   <aside class="toc-wrap">
     <h3 class="toc-title">文章目录：</h3>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1. 引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-SpringBootApplication"><span class="toc-text">2. @SpringBootApplication</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-SpringBootConfiguration"><span class="toc-text">2.1 @SpringBootConfiguration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-EnableAutoConfiguration"><span class="toc-text">2.2 @EnableAutoConfiguration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-AutoConfigurationPackage"><span class="toc-text">2.2.1 @AutoConfigurationPackage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-Import-AutoConfigurationImportSelector-class"><span class="toc-text">2.2.2 @Import(AutoConfigurationImportSelector.class)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-ComponentScan"><span class="toc-text">2.3 @ComponentScan</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E6%96%87%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD"><span class="toc-text">本文相关术语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E9%A1%BA%E5%BA%8F"><span class="toc-text">自动配置顺序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-text">引用</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1. 引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-SpringBootApplication"><span class="toc-text">2. @SpringBootApplication</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-SpringBootConfiguration"><span class="toc-text">2.1 @SpringBootConfiguration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-EnableAutoConfiguration"><span class="toc-text">2.2 @EnableAutoConfiguration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-AutoConfigurationPackage"><span class="toc-text">2.2.1 @AutoConfigurationPackage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-Import-AutoConfigurationImportSelector-class"><span class="toc-text">2.2.2 @Import(AutoConfigurationImportSelector.class)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-ComponentScan"><span class="toc-text">2.3 @ComponentScan</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E9%A1%BA%E5%BA%8F"><span class="toc-text">3. 自动配置顺序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%9C%AC%E6%96%87%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD"><span class="toc-text">4. 本文相关术语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E7%94%A8"><span class="toc-text">引用</span></a></li></ol>
   </aside>
 
         
